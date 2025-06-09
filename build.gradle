@@ -1,0 +1,113 @@
+plugins {
+    id("org.jetbrains.intellij") version "1.5.2"
+    id 'java'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+group 'com.pawsql'
+version '0.1.5'
+
+repositories {
+    maven {
+        url = "https://maven.aliyun.com/repository/public"
+    }
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+intellij {
+    version = '2020.1.3'
+    intellij.updateSinceUntilBuild = false
+}
+
+dependencies {
+    implementation fileTree(dir: '../lib', include: ['*.jar', '*.properties'])
+    implementation fileTree(dir: 'src/main/resources/lib', include: ['*.jar'])
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Spring Boot
+    implementation('org.springframework.boot:spring-boot-starter:2.7.18') {
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+    }
+    implementation 'org.springframework.boot:spring-boot-configuration-processor:2.7.18'
+
+    // Log4j 1.x
+    implementation 'log4j:log4j:1.2.17'
+
+    // HTTP客户端
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+    // JSON处理
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.0'
+
+    // Markdown处理
+    implementation 'org.commonmark:commonmark:0.17.2'
+
+}
+
+sourceCompatibility = 1.9
+targetCompatibility = 1.9
+
+buildPlugin {
+    buildSearchableOptions.enabled = false
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishPlugin {
+    channels = ['Stable']
+    token = 'perm:UGF3U1FM.OTItNzI2NQ==.5vmRY2YdNjHVCZa7GKtm1ADxXaF6Aj'
+}
+
+patchPluginXml {
+    changeNotes = """
+        <h2>0.1.5</h2> <br>
+        -----------------<br>
+        <b>Support Community Edition of PawSQL Server.</b> <br>
+        
+        PawSQL Community Edition is a free and self-hosted edition for individual developer or small teams less than five persons.<br>
+        
+        Check more about PawSQL Community Edition at <a href="https://www.pawsql.com/community"> https://www.pawsql.com/community</a>.
+        
+        <br>
+        <h2>0.1.34</h2> <br>
+        -----------------<br>
+        Fix bugs when configuration is changed.
+        
+        <br>
+        <h2>Initial version</h2>
+        <h2>0.1.3</h2> <br>
+        -----------------<br>
+        Bug fixing during setup.
+        
+        <br>
+        <h2>Initial version</h2>
+        -----------------<br>
+        PawSQL Client seamlessly integrates PawSQL intelligent SQL optimization into JetBrains' IDEs, allowing developers to optimize queries by <b>clicks</b> without leaving their development environment. <a href="docs.pawsql.com">More about PawSQL.</a>
+        <br>
+        <h2> Features </h2>
+        <li><b>Index Advise</b>, Recommend optimal indexes and detect redundant existing indexes.</li>
+        <li><b>Query Rewrite</b>, Recommend semantically equivalent, but more efficient SQLs.
+        </li><li><b>Performance Validation</b>, Ensure better performance after SQL rewrite and index recommendation.
+        </li>
+       <h2>Databases Supported</h2>
+        <li>MySQL 5.6 and above
+        </li><li>PostgreSQL 9.6 and above
+        </li><li>Oracle 11g and above(alpha)
+        </li><li>openGauss 2.0 and above
+        </li><li>MariaDB 10.6 and above(alpha)
+        </li><li>KingbaseES V8 and above(alpha)
+        </li><li>DM8 and above(alpha)
+        </li><li>and More...
+        </li>
+      """
+}

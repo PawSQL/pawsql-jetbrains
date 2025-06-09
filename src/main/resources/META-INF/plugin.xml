@@ -1,0 +1,62 @@
+<idea-plugin>
+    <id>com.pawsql.jetbrain</id>
+    <name>PawSQL Client,SQL Optim/Index Advice MySQL/PostgreSQL/Oracle/etc</name>
+    <vendor email="service@pawsql.com" url="https://www.pawsql.com">PawSQL</vendor>
+    <idea-version since-build='201.6688'/>
+    <description>
+        <![CDATA[
+        PawSQL Client seamlessly integrates PawSQL intelligent SQL optimization into JetBrains' IDEs, allowing developers to optimize queries by <b>clicks</b> without leaving their development environment. <a href="docs.pawsql.com">More about PawSQL.</a>
+        <br>
+        <h2> Features </h2>
+        <li><b>Index Advise</b>, Recommend optimal indexes and detect redundant existing indexes.</li>
+        <li><b>Query Rewrite</b>, Recommend semantically equivalent, but more efficient SQLs.
+        </li><li><b>Performance Validation</b>, Ensure better performance after SQL rewrite and index recommendation.
+        </li>
+       <h2>Databases Supported</h2>
+        <li>MySQL 5.6 and above
+        </li><li>PostgreSQL 9.6 and above
+        </li><li>Oracle 11g and above
+		</li><li>openGauss 2.0 and above
+        </li><li>SQLServer(alpha)
+        </li><li>MariaDB 10.6 and above(alpha)
+        </li><li>KingbaseES V8 and above(alpha)
+        </li><li>DM8 and above(alpha)
+        </li><li>and More...
+        </li>
+]]>
+    </description>
+    <!--    <resource-bundle>messages.messages</resource-bundle>-->
+
+    <depends>com.intellij.modules.platform</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable parentId="tools" instance="com.pawsql.client.PawSettingPage"
+                             id="com.pawsql.client.PawSettingPage"
+                             displayName="PawSQL Client"/>
+        <applicationService serviceImplementation="com.pawsql.client.PawSettingState"/>
+        <postStartupActivity implementation="com.pawsql.client.PluginSetup"/>
+
+        <toolWindow id="PawSQL Client" canCloseContents="true"
+                    anchor="bottom"
+                    icon="com.pawsql.client.icons.PawSQLIcons.ICON_24"
+                    factoryClass="com.pawsql.client.PawWindowFactory"/>
+    </extensions>
+    <actions>
+        <group id="SelectOptimizeActionGroup" class="com.pawsql.action.SelectOptimizeActionGroup"
+               text="Optimize SQL in..."
+               icon="com.pawsql.client.icons.PawSQLIcons.ICON_24"
+               description="Optimize SQL in one of Workspaces"
+               popup="true">
+            <add-to-group group-id="BasicEditorPopupMenu"
+                          relative-to-action="EditorPopupMenu1"
+                          anchor="after"/>
+            <add-to-group group-id="EditorPopupMenu"
+                          relative-to-action="EditorPopupMenu1"
+                          anchor="after"/>
+            <action id="com.pawsql.action.ServerConfigAction"
+                    class="com.pawsql.action.ServerConfigAction"
+                    text="PawSQL Config"
+                    description="Setup PawSQL...">
+            </action>
+        </group>
+    </actions>
+</idea-plugin>
